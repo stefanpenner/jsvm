@@ -13,7 +13,7 @@ class window.Integer
           @value = (@value & 0x000000ff) + (value<<8)  if @bits is 16
           if @bits is 32
             high = value.toString(16)
-            low   = @value.toString(16).substring(4,4)
+            low   = @value.toString(16).substring(4,8)
             @value = parseInt(high+low,16)
 
       low:
