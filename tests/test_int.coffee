@@ -37,7 +37,7 @@ test "set 32bit high", ->
   integer = new Integer(32,0xdeadbeef)
   integer.high = 0xbeef
 
-  equal integer.high, 0xbeefbeef
+  equal integer.value, 0xbeefbeef
 
 test "set 16bit high", ->
   integer = new Integer(16,0xbeef)
