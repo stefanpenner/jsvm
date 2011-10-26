@@ -13,15 +13,15 @@ test "setting register", 2,  ->
   register = new Register
   register.value = 0xdeadbeef
 
-  equal register.value, 0xdeadbeef
-  equal register.value, 3735928559
+  equal register.value.toI,  0xdeadbeef
+  equal register.value.toI, 3735928559
 
 test "setting a register on parent, reading from child", 1, ->
   parent = new Register
   child  = new Register(parent)
   parent.value = 0xdeadbeef
 
-  equal child.value, 0xbeef
+  equal child.value.toI, 0xbeef
 
 test "setting a register on child, reading from parent", 1, ->
   parent = new Register
@@ -29,14 +29,14 @@ test "setting a register on child, reading from parent", 1, ->
   parent.value = 0xdeadbeef
   child.value  = 0xdead
 
-  equal parent.value, 0xdeaddead
+  equal parent.value.toI, 0xdeaddead
 
 test "setting a register on parent, reading from low child", 1, ->
   parent = new Register
   child  = new Register(parent,false)
   parent.value = 0xdeadbeef
 
-  equal child.value, 0xbeef
+  equal child.value.toI, 0xbeef
 
 test "setting a register on low child, reading from parent", 1, ->
   parent = new Register
@@ -44,7 +44,7 @@ test "setting a register on low child, reading from parent", 1, ->
   parent.value = 0xdeadbeef
   child.value  = 0xdead
 
-  equal parent.value, 0xdeaddead
+  equal parent.value.toI, 0xdeaddead
 
 test "setting a register on grandparent, reading from low child", 2, ->
   grandParent = new Register
@@ -53,8 +53,8 @@ test "setting a register on grandparent, reading from low child", 2, ->
 
   grandParent.value = 0xdeadbeef
 
-  equal parent.value, 0xbeef
-  equal child.value,  0xef
+  equal parent.value.toI, 0xbeef
+  equal child.value.toI,  0xef
 
 test "setting a register on grandparent, reading from high child", 2, ->
   grandParent = new Register
@@ -63,17 +63,28 @@ test "setting a register on grandparent, reading from high child", 2, ->
 
   grandParent.value = 0xdeadbeef
 
-  equal parent.value, 0xbeef
-  equal child.value,  0xbe
+  equal parent.value.toI, 0xbeef
+  equal child.value.toI,  0xbe
+
+test "setting a register on grandparent, setting from high child", 2, ->
+  grandParent = new Register
+  parent      = new Register(grandParent)
+  child       = new Register(parent,true)
+
+  grandParent.value = 0xdeadbeef
+
+  child.value =   0xff
+
+  equal grandParent.value, 0xdeadffef
 
 test "existence of empty registars", 8, ->
   cpu = new CPU
-  equal cpu.eax, 0
-  equal cpu.ebx, 0
-  equal cpu.ecx, 0
-  equal cpu.edx, 0
-  equal cpu.esi, 0
-  equal cpu.edi, 0
-  equal cpu.ebp, 0
-  equal cpu.esp, 0
+  same cpu.eax, new Integer(32,0x00000000)
+  same cpu.ebx, new Integer(32,0x00000000)
+  same cpu.ecx, new Integer(32,0x00000000)
+  same cpu.edx, new Integer(32,0x00000000)
+  same cpu.esi, new Integer(32,0x00000000)
+  same cpu.edi, new Integer(32,0x00000000)
+  same cpu.ebp, new Integer(32,0x00000000)
+  same cpu.esp, new Integer(32,0x00000000)
 
